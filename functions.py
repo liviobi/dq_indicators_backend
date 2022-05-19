@@ -41,14 +41,20 @@ def computeConfidenceChunker(files, filename, indicator):
 
 def computeParsable(files, filename, indicator):
     print(f"running computation of {indicator} for {filename}")
-    time.sleep(random.randint(1, 30))
-    files[filename][indicator] = "completed"
+    sleepTime = random.randint(1, 30)
+    time.sleep(sleepTime)
+    mockResult = random.uniform(0, 1)
+    mockResult = str(mockResult*100)[0:4]
+    files[filename][indicator] = f"{mockResult}"
 
 
 def computeFit(files, filename, indicator):
     print(f"running computation of {indicator} for {filename}")
-    time.sleep(random.randint(1, 30))
-    files[filename][indicator] = "completed"
+    sleepTime = random.randint(1, 30)
+    time.sleep(sleepTime)
+    mockResult = random.uniform(0, 1)
+    mockResult = str(mockResult*100)[0:4]
+    files[filename][indicator] = f"{mockResult}"
 
 
 def computeSpellingMistakes(files, filename, indicator):

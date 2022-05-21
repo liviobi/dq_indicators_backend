@@ -1,3 +1,5 @@
 uploads/
 .vscode/
 backup_files/
+spello_model/*
+java-indicators/java-indicators.jar

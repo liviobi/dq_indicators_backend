@@ -10,6 +10,7 @@ import werkzeug
 import os
 from flask_cors import CORS
 from config import cfg
+import nltk
 
 
 from functions import computeIndicator, deleteFileFromFolder, getListOfFilesNames
@@ -23,6 +24,7 @@ CORS(app)
 # dictionary
 files = dict()
 
+
 indicatorsTemplate = {
     "confidence_tokenizer": None,
     "confidence_pos": None,
@@ -35,8 +37,11 @@ indicatorsTemplate = {
     "perc_lowercase": None,
     "perc_uppercase": None,
     "lexical_diversity": None,
-    "unknown_words": None,
-    "acronyms": None, }
+    "recognized_by_pos": None,
+    "acronyms": None,
+    "present_in_dictionary": None,
+    "readability_cli": None,
+    "readability_ari": None,}
 
 
 # save file to folder and update dictionary
@@ -114,5 +119,8 @@ if __name__ == '__main__':
     # initialize the dict of files
     for filename in getListOfFilesNames(UPLOAD_DIR):
         files[filename] = copy.deepcopy(indicatorsTemplate)
+
+    nltk.download('averaged_perceptron_tagger')
+    nltk.download('universal_tagset')
 
     app.run(debug=True, port=cfg["port"], host=cfg["host"])

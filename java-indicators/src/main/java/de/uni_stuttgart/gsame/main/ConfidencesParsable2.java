@@ -66,7 +66,7 @@ public class ConfidencesParsable2 {
 	  
 	  
 	  
-	  InputStream modelIn = new FileInputStream("models/en-token.bin");
+	  InputStream modelIn = new FileInputStream(args[1]+ File.separatorChar + "en-token.bin");
 	  
 	 TokenizerModel model = null;
 	  try {
@@ -85,7 +85,7 @@ public class ConfidencesParsable2 {
 	    }
 	  }
 	  
-	  InputStream modelNE = new FileInputStream("models/en-ner-person.bin");
+	  InputStream modelNE = new FileInputStream(args[1]+ File.separatorChar + "en-ner-person.bin");
 	  TokenNameFinderModel model1 = null;
 
 	  try {
@@ -108,7 +108,7 @@ public class ConfidencesParsable2 {
 	  POSModel model2 = null;
 	  try {
 		//  modelTag = new FileInputStream("models/de-pos-maxent.bin");
-		  modelTag = new FileInputStream("models/en-pos-maxent.bin");
+		  modelTag = new FileInputStream(args[1]+ File.separatorChar + "en-pos-maxent.bin");
 	      model2 = new POSModel(modelTag);
 	  }
 	  catch (IOException e) {
@@ -129,7 +129,7 @@ public class ConfidencesParsable2 {
 	  ChunkerModel model3 = null;
   
 	  try {
-		    modelC = new FileInputStream("models/en-chunker.bin");
+		    modelC = new FileInputStream(args[1]+ File.separatorChar + "en-chunker.bin");
 	
 		    model3 = new ChunkerModel(modelC);
 		  } catch (IOException e) {
@@ -146,7 +146,7 @@ public class ConfidencesParsable2 {
 	  
 	 
 	  
-	  InputStream modelP = new FileInputStream("models/en-parser-chunking.bin");
+	  InputStream modelP = new FileInputStream(args[1]+ File.separatorChar + "en-parser-chunking.bin");
 	  ParserModel model4 = null;
 	 
 	  try {

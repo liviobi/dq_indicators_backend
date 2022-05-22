@@ -1,6 +1,7 @@
 from http import server
 import os
 import random
+from subprocess import check_output
 from threading import Thread
 import time
 import string
@@ -44,38 +45,81 @@ def removePunctuationFromTokenized(contentsTokenized):
         word for word in contentsTokenized if word not in excludePuncuation]
     return filteredContents
 
+# used to set all java indicators as processing together since they
+# are always processed together
+
+
+def setJavaIndicatorsProcessing(files, filename):
+    files[filename]["parsable"] = "processing"
+    files[filename]["confidence_tokenizer"] = "processing"
+    files[filename]["confidence_pos"] = "processing"
+    files[filename]["confidence_ner"] = "processing"
+    files[filename]["confidence_chunker"] = "processing"
+
+# once I get the result from the java process set all the indicators
+
+
+def setJavaIndicators(files, filename, result):
+    files[filename]["parsable"] = result[0][0:4]
+    files[filename]["confidence_tokenizer"] = result[1][0:4]
+    files[filename]["confidence_pos"] = result[2][0:4]
+    files[filename]["confidence_ner"] = result[3][0:4]
+    files[filename]["confidence_chunker"] = result[4][0:4]
+
 
 def computeConfidenceTokenizer(files, filename, indicator):
     print(f"running computation of {indicator} for {filename}")
-    time.sleep(random.randint(1, 30))
-    files[filename][indicator] = "completed"
+    # get the absolute path of the file to pass as argument to jar
+    path = os.path.abspath(os.path.join(cfg["uploadDir"], "prose.txt"))
+    pathModels = os.path.abspath("./java-indicators/models")
+    # launch java jar
+    result = check_output(
+        ['java', '-jar', './java-indicators/java-indicators.jar', path, pathModels])
+    setJavaIndicators(files, filename, result.decode().split(","))
 
 
 def computeConfidencePos(files, filename, indicator):
     print(f"running computation of {indicator} for {filename}")
-    time.sleep(random.randint(1, 30))
-    files[filename][indicator] = "completed"
+    # get the absolute path of the file to pass as argument to jar
+    path = os.path.abspath(os.path.join(cfg["uploadDir"], "prose.txt"))
+    pathModels = os.path.abspath("./java-indicators/models")
+    # launch java jar
+    result = check_output(
+        ['java', '-jar', './java-indicators/java-indicators.jar', path, pathModels])
+    setJavaIndicators(files, filename, result.decode().split(","))
 
 
 def computeConfidenceNer(files, filename, indicator):
     print(f"running computation of {indicator} for {filename}")
-    time.sleep(random.randint(1, 30))
-    files[filename][indicator] = "completed"
+    # get the absolute path of the file to pass as argument to jar
+    path = os.path.abspath(os.path.join(cfg["uploadDir"], "prose.txt"))
+    pathModels = os.path.abspath("./java-indicators/models")
+    # launch java jar
+    result = check_output(
+        ['java', '-jar', './java-indicators/java-indicators.jar', path, pathModels])
+    setJavaIndicators(files, filename, result.decode().split(","))
 
 
 def computeConfidenceChunker(files, filename, indicator):
     print(f"running computation of {indicator} for {filename}")
-    time.sleep(random.randint(1, 30))
-    files[filename][indicator] = "completed"
+    # get the absolute path of the file to pass as argument to jar
+    path = os.path.abspath(os.path.join(cfg["uploadDir"], "prose.txt"))
+    pathModels = os.path.abspath("./java-indicators/models")
+    # launch java jar
+    result = check_output(
+        ['java', '-jar', './java-indicators/java-indicators.jar', path, pathModels])
+    setJavaIndicators(files, filename, result.decode().split(","))
 
 
 def computeParsable(files, filename, indicator):
     print(f"running computation of {indicator} for {filename}")
-    sleepTime = random.randint(1, 30)
-    time.sleep(sleepTime)
-    mockResult = random.uniform(0, 1)
-    mockResult = str(mockResult*100)[0:4]
-    files[filename][indicator] = f"{mockResult}"
+    # get the absolute path of the file to pass as argument to jar
+    path = os.path.abspath(os.path.join(cfg["uploadDir"], "prose.txt"))
+    pathModels = os.path.abspath("./java-indicators/models")
+    # launch java jar
+    result = check_output(
+        ['java', '-jar', './java-indicators/java-indicators.jar', path, pathModels])
+    setJavaIndicators(files, filename, result.decode().split(","))
 
 
 def computeFit(files, filename, indicator):

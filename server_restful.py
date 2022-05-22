@@ -13,7 +13,7 @@ from config import cfg
 import nltk
 
 
-from functions import computeIndicator, deleteFileFromFolder, getListOfFilesNames
+from functions import computeIndicator, deleteFileFromFolder, getListOfFilesNames, setJavaIndicatorsProcessing
 
 app = Flask(__name__)
 api = Api(app)
@@ -26,11 +26,11 @@ files = dict()
 
 
 indicatorsTemplate = {
+    "parsable": None,
     "confidence_tokenizer": None,
     "confidence_pos": None,
     "confidence_ner": None,
     "confidence_chunker": None,
-    "parsable": None,
     "fit": None,
     "spelling_mistakes": None,
     "avg_sentence_len": None,
@@ -41,10 +41,17 @@ indicatorsTemplate = {
     "acronyms": None,
     "present_in_dictionary": None,
     "readability_cli": None,
-    "readability_ari": None,}
+    "readability_ari": None, }
 
+javaIndicators = ["parsable",
+                  "confidence_tokenizer",
+                  "confidence_pos",
+                  "confidence_ner",
+                  "confidence_chunker", ]
 
 # save file to folder and update dictionary
+
+
 def saveFile(file, uploadDir):
     file.save(os.path.join(uploadDir, file.filename))
     files[file.filename] = copy.deepcopy(indicatorsTemplate)
@@ -106,6 +113,10 @@ class Indicator(Resource):
         # if indicator not computed
         if(files[filename][indicator] == None):
             files[filename][indicator] = "processing"
+            # since the java indicators are processed together I need to set them all as processing
+            # to avoid to run the same computation everytime for each of them
+            if(indicator in javaIndicators):
+                setJavaIndicatorsProcessing(files, filename)
             computeIndicator(files, filename, indicator)
 
         return {'indicator': files[filename][indicator]}, 200

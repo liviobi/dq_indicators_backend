@@ -41,7 +41,8 @@ indicatorsTemplate = {
     "acronyms": None,
     "present_in_dictionary": None,
     "readability_cli": None,
-    "readability_ari": None, }
+    "readability_ari": None,
+    "acronyms": None}
 
 javaIndicators = ["parsable",
                   "confidence_tokenizer",

@@ -274,9 +274,19 @@ def computeReadabilityAri(files, filename, indicator):
 
 
 def computeAcronyms(files, filename, indicator):
-    print(f"running computation of {indicator} for {filename}")
-    time.sleep(10)
-    files[filename][indicator] = "completed"
+    with open(os.path.join(cfg["uploadDir"], filename), "r") as f:
+        raw_text = f.read()
+        text_tokenized = removePunctuationFromTokenized(
+            nltk.word_tokenize(raw_text))
+        acronym_list = re.findall(
+            r"\b(?:[0-9]+[A-Z][A-Z0-9]*)|(?:[A-Z][A-Z0-9]+)\b|\b[A-Z\.]{2,}\b", raw_text)
+        acronyms_count = 0
+        for word in text_tokenized:
+            if word in acronym_list:
+                acronyms_count += 1
+        result = (1-(acronyms_count / len(text_tokenized)))*100
+        files[filename][indicator] = str(result)[0:4]
+        f.close()
 
 
 def computeIndicator(files, filename, indicator):
@@ -338,4 +348,7 @@ def computeIndicator(files, filename, indicator):
                'files': files, 'filename': filename, 'indicator': indicator}).start()
     elif(indicator == "readability_ari"):
         Thread(target=computeReadabilityAri, kwargs={
+               'files': files, 'filename': filename, 'indicator': indicator}).start()
+    elif(indicator == "acronyms"):
+        Thread(target=computeAcronyms, kwargs={
                'files': files, 'filename': filename, 'indicator': indicator}).start()

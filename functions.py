@@ -70,7 +70,7 @@ def setJavaIndicators(files, filename, result):
 def computeConfidenceTokenizer(files, filename, indicator):
     print(f"running computation of {indicator} for {filename}")
     # get the absolute path of the file to pass as argument to jar
-    path = os.path.abspath(os.path.join(cfg["uploadDir"], "prose.txt"))
+    path = os.path.abspath(os.path.join(cfg["uploadDir"], filename))
     pathModels = os.path.abspath("./java-indicators/models")
     # launch java jar
     result = check_output(
@@ -81,7 +81,7 @@ def computeConfidenceTokenizer(files, filename, indicator):
 def computeConfidencePos(files, filename, indicator):
     print(f"running computation of {indicator} for {filename}")
     # get the absolute path of the file to pass as argument to jar
-    path = os.path.abspath(os.path.join(cfg["uploadDir"], "prose.txt"))
+    path = os.path.abspath(os.path.join(cfg["uploadDir"], filename))
     pathModels = os.path.abspath("./java-indicators/models")
     # launch java jar
     result = check_output(
@@ -92,7 +92,7 @@ def computeConfidencePos(files, filename, indicator):
 def computeConfidenceNer(files, filename, indicator):
     print(f"running computation of {indicator} for {filename}")
     # get the absolute path of the file to pass as argument to jar
-    path = os.path.abspath(os.path.join(cfg["uploadDir"], "prose.txt"))
+    path = os.path.abspath(os.path.join(cfg["uploadDir"], filename))
     pathModels = os.path.abspath("./java-indicators/models")
     # launch java jar
     result = check_output(
@@ -103,7 +103,7 @@ def computeConfidenceNer(files, filename, indicator):
 def computeConfidenceChunker(files, filename, indicator):
     print(f"running computation of {indicator} for {filename}")
     # get the absolute path of the file to pass as argument to jar
-    path = os.path.abspath(os.path.join(cfg["uploadDir"], "prose.txt"))
+    path = os.path.abspath(os.path.join(cfg["uploadDir"], filename))
     pathModels = os.path.abspath("./java-indicators/models")
     # launch java jar
     result = check_output(
@@ -114,7 +114,7 @@ def computeConfidenceChunker(files, filename, indicator):
 def computeParsable(files, filename, indicator):
     print(f"running computation of {indicator} for {filename}")
     # get the absolute path of the file to pass as argument to jar
-    path = os.path.abspath(os.path.join(cfg["uploadDir"], "prose.txt"))
+    path = os.path.abspath(os.path.join(cfg["uploadDir"], filename))
     pathModels = os.path.abspath("./java-indicators/models")
     # launch java jar
     result = check_output(

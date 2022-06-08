@@ -349,6 +349,3 @@ def computeIndicator(files, filename, indicator):
     elif(indicator == "readability_ari"):
         Thread(target=computeReadabilityAri, kwargs={
                'files': files, 'filename': filename, 'indicator': indicator}).start()
-    elif(indicator == "acronyms"):
-        Thread(target=computeAcronyms, kwargs={
-               'files': files, 'filename': filename, 'indicator': indicator}).start()

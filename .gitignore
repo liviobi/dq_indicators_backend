@@ -1,4 +1,4 @@
-uploads/
+uploads/*
 .vscode/
 backup_files/
 spello_model/*

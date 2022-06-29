@@ -1,0 +1,42 @@
+git clone https://github.com/liviobi/dq_indicators_backend.git
+
+
+sudo apt update
+#sudo apt upgrade -y
+sudo apt install python3-pip -y
+pip install gdown
+#sudo apt install ocrfeeder
+sudo apt install -y openjdk-17-jdk
+sudo apt-get install python3-enchant -y
+wget https://repo.anaconda.com/miniconda/Miniconda3-py37_4.12.0-Linux-x86_64.sh
+bash Miniconda3-py37_4.12.0-Linux-x86_64.sh 
+sudo reboot
+
+==================questo=============================
+cd dq_indicators_backend
+mkdir spello_model
+mkdir uploads
+echo this is a sample file> ./uploads/sample.txt
+cd spello_model
+gdown --id 1k2ebwMHqBnZKSqKw26ZMd07__WFyM9tw
+cd ../java-indicators
+gdown --id 1mDcJp4fDsaR89qtGeJAUhP_D52kSL_wA
+cd ..
+
+
+conda install -c anaconda flask -y
+conda install -c conda-forge flask-restful -y
+conda install -c anaconda flask-cors -y
+conda install -c anaconda nltk -y
+conda install -c conda-forge pyenchant -y
+pip install spello
+conda install -c conda-forge textstat -y
+
+
+==================o questo=============================
+cd dq_indicators_backend
+chmod +x setup.sh
+./setup.sh
+
+
+

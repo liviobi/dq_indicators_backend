@@ -133,11 +133,14 @@ def computeFit(files, filename, indicator):
 
 def computeSpellingMistakes(files, filename, indicator):
     print(f"running computation of {indicator} for {filename}")
-    with open(os.path.join(cfg["uploadDir"], filename), "r") as f:
+    with open(os.path.join(cfg["uploadDir"], filename), "r",errors='backslashreplace') as f:
         raw_text = f.read()
         text_tokenized = removePunctuationFromTokenized(
             nltk.word_tokenize(raw_text))
-        corrected = sp.spell_correct(raw_text)
+        if len(text_tokenized) == 0:
+            result = 0
+        else:
+            corrected = sp.spell_correct(raw_text)
         mistakes = 0
         for w in text_tokenized:
             if(w in corrected['correction_dict']):
@@ -149,17 +152,19 @@ def computeSpellingMistakes(files, filename, indicator):
 
 def computePresentInDictionary(files, filename, indicator):
     print(f"running computation of {indicator} for {filename}")
-    with open(os.path.join(cfg["uploadDir"], filename), "r") as f:
+    with open(os.path.join(cfg["uploadDir"], filename), "r",errors='backslashreplace') as f:
         raw_text = f.read()
         text_tokenized = removePunctuationFromTokenized(
             nltk.word_tokenize(raw_text))
-
-        d = enchant.Dict("en_US")
-        correct = 0
-        for word in text_tokenized:
-            if d.check(word):
-                correct += 1
-        result = (correct / len(text_tokenized))*100
+        if len(text_tokenized) == 0:
+            result = 0
+        else:    
+            d = enchant.Dict("en_US")
+            correct = 0
+            for word in text_tokenized:
+                if d.check(word):
+                    correct += 1
+            result = (correct / len(text_tokenized))*100
         files[filename][indicator] = str(result)[0:4]
         f.close()
 
@@ -174,7 +179,7 @@ def wordcount(s):
 
 def computeAvgSentLen(files, filename, indicator):
     print(f"running computation of {indicator} for {filename}")
-    with open(os.path.join(cfg["uploadDir"], filename), "r") as f:
+    with open(os.path.join(cfg["uploadDir"], filename), "r",errors='backslashreplace') as f:
         raw_text = f.read()
         terminating_punct = "[!?.]"
         sentences = [
@@ -197,12 +202,14 @@ def computeAvgSentLen(files, filename, indicator):
 
 
 def computePercLowercase(files, filename, indicator):
+    #not used
     print(f"running computation of {indicator} for {filename}")
     time.sleep(random.randint(1, 30))
     files[filename][indicator] = "completed"
 
 
 def computePercUppercase(files, filename, indicator):
+    #not used
     print(f"running computation of {indicator} for {filename}")
     time.sleep(random.randint(1, 30))
     files[filename][indicator] = "completed"
@@ -210,38 +217,42 @@ def computePercUppercase(files, filename, indicator):
 
 def computeLexicalDiversity(files, filename, indicator):
     print(f"running computation of {indicator} for {filename}")
-    with open(os.path.join(cfg["uploadDir"], filename), "r") as f:
+    with open(os.path.join(cfg["uploadDir"], filename), "r",errors='backslashreplace') as f:
         raw_text = f.read()
         text_tokenized = removePunctuationFromTokenized(
             nltk.word_tokenize(raw_text))
 
-        # TODO normalize
-
-        result = (len(set(text_tokenized)) / len(text_tokenized))*100
+        if len(text_tokenized) == 0:
+            result = 0
+        else:
+            result = (len(set(text_tokenized)) / len(text_tokenized))*100
         files[filename][indicator] = str(result)[0:4]
         f.close()
 
 
 def computeRecognizedByPOS(files, filename, indicator):
     print(f"running computation of {indicator} for {filename}")
-    with open(os.path.join(cfg["uploadDir"], filename), "r") as f:
+    with open(os.path.join(cfg["uploadDir"], filename), "r",errors='backslashreplace') as f:
         raw_text = f.read()
         text_tokenized = removePunctuationFromTokenized(
             nltk.word_tokenize(raw_text))
 
-        text_tagged = nltk.pos_tag(text_tokenized, tagset='universal')
-        unknown = 0
-        for t in text_tagged:
-            if t[1] == "X":
-                unknown += 1
-        result = (1 - (unknown/len(text_tagged)))*100
+        if len(text_tokenized) == 0:
+            result = 0
+        else:    
+            text_tagged = nltk.pos_tag(text_tokenized, tagset='universal')
+            unknown = 0
+            for t in text_tagged:
+                if t[1] == "X":
+                    unknown += 1
+            result = (1 - (unknown/len(text_tagged)))*100
         files[filename][indicator] = str(result)[0:4]
         f.close()
 
 
 def computeReadabilityCli(files, filename, indicator):
     print(f"running computation of {indicator} for {filename}")
-    with open(os.path.join(cfg["uploadDir"], filename), "r") as f:
+    with open(os.path.join(cfg["uploadDir"], filename), "r",errors='backslashreplace') as f:
         raw_text = f.read()
         score = textstat.coleman_liau_index(raw_text)
         optimalScore = 3
@@ -258,7 +269,7 @@ def computeReadabilityCli(files, filename, indicator):
 
 def computeReadabilityAri(files, filename, indicator):
     print(f"running computation of {indicator} for {filename}")
-    with open(os.path.join(cfg["uploadDir"], filename), "r") as f:
+    with open(os.path.join(cfg["uploadDir"], filename), "r",errors='backslashreplace') as f:
         raw_text = f.read()
         score = textstat.automated_readability_index(raw_text)
         optimalScore = 3
@@ -274,17 +285,25 @@ def computeReadabilityAri(files, filename, indicator):
 
 
 def computeAcronyms(files, filename, indicator):
-    with open(os.path.join(cfg["uploadDir"], filename), "r") as f:
+    with open(os.path.join(cfg["uploadDir"], filename), "r",errors='backslashreplace') as f:
         raw_text = f.read()
         text_tokenized = removePunctuationFromTokenized(
             nltk.word_tokenize(raw_text))
-        acronym_list = re.findall(
-            r"\b(?:[0-9]+[A-Z][A-Z0-9]*)|(?:[A-Z][A-Z0-9]+)\b|\b[A-Z\.]{2,}\b", raw_text)
-        acronyms_count = 0
-        for word in text_tokenized:
-            if word in acronym_list:
-                acronyms_count += 1
-        result = (1-(acronyms_count / len(text_tokenized)))*100
+        if len(text_tokenized) == 0:
+            result = 0
+        else:    
+            acronym_list = re.findall(r"\b(?:[0-9]+[A-Z][A-Z0-9]*)|(?:[A-Z][A-Z0-9]+)\b|\b[A-Z\.]{2,}\b", raw_text)
+            #to remove upper case words present in dictionary from the list of acronyms
+            d = enchant.Dict("en_US")
+            for acronym in acronym_list:
+                if d.check(acronym.lower()):
+                    acronym_list.remove(acronym)
+            
+            acronyms_count = 0
+            for word in text_tokenized:
+                if word in acronym_list:
+                    acronyms_count += 1
+            result = (1-(acronyms_count / len(text_tokenized)))*100
         files[filename][indicator] = str(result)[0:4]
         f.close()
 

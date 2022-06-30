@@ -3,3 +3,5 @@ uploads/*
 backup_files/
 spello_model/*
 java-indicators/java-indicators.jar
+__pycache__/*
+nohup.out
